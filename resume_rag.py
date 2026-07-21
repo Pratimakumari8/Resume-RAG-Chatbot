@@ -1,12 +1,15 @@
 """
 RAG Pipeline over a Resume — built from scratch (no LangChain yet)
-Uses Google Gemini for both embeddings and generation.
+Uses Google Gemini (new google-genai SDK) for both embeddings and generation.
 """
 
 import os
-import google.generativeai as genai
+import time
 import numpy as np
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
+from google.genai.errors import ServerError, ClientError
 
 # ============================================================
 # STEP 0: SETUP
@@ -15,10 +18,12 @@ load_dotenv()  # reads variables from a local .env file
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
     raise ValueError("GEMINI_API_KEY not found. Add it to your .env file.")
-genai.configure(api_key=api_key)
 
-EMBEDDING_MODEL = "models/text-embedding-004"
-GENERATION_MODEL = "gemini-1.5-flash"
+client = genai.Client(api_key=api_key)
+
+EMBEDDING_MODEL = "gemini-embedding-001"
+GENERATION_MODEL = "gemini-3.5-flash"
+FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-2.5-flash"]
 
 
 # ============================================================
@@ -61,12 +66,12 @@ def embed_text(text):
     Converts a piece of text into an embedding vector using Gemini's
     embedding model. Returns a list of floats.
     """
-    result = genai.embed_content(
+    result = client.models.embed_content(
         model=EMBEDDING_MODEL,
-        content=text,
-        task_type="retrieval_document"  # tells the model this is content to be searched later
+        contents=text,
+        config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
     )
-    return result["embedding"]
+    return result.embeddings[0].values
 
 
 def embed_query(text):
@@ -75,12 +80,12 @@ def embed_query(text):
     Gemini has a separate task_type for queries vs documents —
     this small distinction actually improves retrieval accuracy.
     """
-    result = genai.embed_content(
+    result = client.models.embed_content(
         model=EMBEDDING_MODEL,
-        content=text,
-        task_type="retrieval_query"
+        contents=text,
+        config=types.EmbedContentConfig(task_type="RETRIEVAL_QUERY")
     )
-    return result["embedding"]
+    return result.embeddings[0].values
 
 
 # ============================================================
@@ -122,9 +127,27 @@ Question: {question}
 
 Answer:"""
 
-    model = genai.GenerativeModel(GENERATION_MODEL)
-    response = model.generate_content(prompt)
-    return response.text
+    models_to_try = [GENERATION_MODEL] + FALLBACK_MODELS
+    max_retries_per_model = 2
+    wait_seconds = 5
+
+    for model_name in models_to_try:
+        for attempt in range(max_retries_per_model):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                return response.text
+            except (ServerError, ClientError) as e:
+                is_last_attempt_for_model = attempt == max_retries_per_model - 1
+                if not is_last_attempt_for_model:
+                    print(f"  ({model_name} busy, retrying in {wait_seconds}s...)")
+                    time.sleep(wait_seconds)
+                else:
+                    print(f"  ({model_name} unavailable, trying next model...)")
+
+    raise RuntimeError("All models are currently unavailable. Try again in a minute.")
 
 
 # ============================================================
