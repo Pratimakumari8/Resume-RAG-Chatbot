@@ -1,0 +1,43 @@
+Pratima Kumari
+kumaripratima337@gmail.com | 8757339487 | X | LinkedIn | GitHub | LeetCode
+
+Experience
+Full-Stack Developer Intern | Prospect Legal | Nov 2025 – Jan 2026
+- Completed a 90-day paid internship, collaborating with a teammate to design and develop a full-stack EdTech + E-commerce platform from scratch.
+- Developed secure RESTful APIs using Node.js and Express.js, implementing authentication and role-based access control.
+- Designed and implemented role-based dashboards for Student, Teacher, Parent, and Admin users.
+- Managed deployment configuration and production-ready build setup.
+- Live Project: prospectedu.org
+- Tech Stack: React.js, Node.js, Express.js, MongoDB, Razorpay, Context API, React Router, Postman, Git
+
+Education
+University Institute of Technology, RGPV – B.Tech in Information Technology (CGPA: 8.08), 2023 – 2027
+Notre Dame Academy – AISSCE (Class XII), 88.2%, 2020 – 2022
+Don Bosco Academy – ICSE (Class X), 95%, 2010 – 2020
+
+Projects
+Zulip Docker-Heroku Integration (zulip/docker-zulip) - GitHub
+- Opened a pull request to zulip/docker-zulip, adding a Bash-based configuration adapter enabling one-click Heroku deployment for Zulip's Docker image by translating managed service URLs into the environment variables expected by the existing startup process.
+- Modified the Dockerfile and container entrypoint to integrate the adapter without changing upstream configuration logic; validated locally via Docker and through automated CI checks (build, lint, security scans).
+- Tech stack: Bash, Docker, Git, GitHub, GitHub Actions, Linux, Heroku (app.json/heroku.yml), PostgreSQL, RabbitMQ, Redis, Memcached
+
+VerifySkills – Blockchain-Based Credential Verification Platform - GitHub
+- Developed a full-stack blockchain-enabled credential verification platform that allows institutes to issue, manage, and verify tamper-proof digital certificates securely.
+- Designed and implemented a custom Solana smart contract using Rust and Anchor Framework to store certificate metadata and cryptographic hashes on-chain, ensuring immutability and fraud prevention.
+- Integrated Solana wallet connectivity, blockchain-based certificate issuance, and on-chain verification workflows for secure credential authentication.
+- Tech stack: React.js, Tailwind CSS, Node.js, Express.js, MongoDB, JWT, Solana, Rust, Anchor Framework, Solana Web3.js, Solana Wallet Adapter, REST APIs, Cloudinary, Git, Vite
+
+Skills
+Languages: C++, C, Java, Python, Rust, JavaScript, SQL
+Frontend: HTML, CSS, React.js
+Backend: Node.js, Express.js, REST APIs
+Databases: MongoDB, PostgreSQL, MySQL
+Core: DSA, DBMS, OOP, OS, CN
+Tools: Docker, Kubernetes
+Salesforce: 33 badges, 1 superbadge
+Web3
+
+Academic and Extracurricular Achievements
+- Built a personal brand on X, growing from 0 to 2.5K+ followers in 12 months by sharing coding insights and problem-solving approaches.
+- Actively participated in #100DaysOfCode on X and led #LearnInPublic initiative, sharing daily coding challenges.
+- Solved 250+ questions on LeetCode and 150+ across other platforms.
